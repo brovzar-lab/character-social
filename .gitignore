@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# claude code
+.claude/
+
+# raw simulation exports (processed output is in src/data/)
+/data/exports/

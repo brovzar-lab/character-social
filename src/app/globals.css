@@ -128,3 +128,301 @@
     @apply font-sans;
   }
 }
+
+/* ═══════════════════════════════════════════
+   CYBERPUNK THEME — Banani Design System
+   ═══════════════════════════════════════════ */
+
+:root {
+  --cyber-bg: #05050a;
+  --cyber-panel: rgba(10, 15, 25, 0.85);
+  --cyber-panel-dark: rgba(5, 8, 15, 0.95);
+  --cyber-border: rgba(0, 255, 255, 0.15);
+  --cyber-accent: #00ffff;
+  --cyber-accent-dim: rgba(0, 255, 255, 0.4);
+  --cyber-text: #e0e6ed;
+  --cyber-text-bright: #ffffff;
+  --cyber-muted: #8b9bb4;
+  --cyber-danger: #ff0055;
+}
+
+/* Page background with scanline grid */
+.cyber-bg {
+  background-color: var(--cyber-bg);
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(0, 255, 255, 0.05) 0%, transparent 50%),
+    linear-gradient(rgba(0, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 40px 40px, 40px 40px;
+  color: var(--cyber-text);
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+
+.cyber-bg::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.1) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Agent Card — polygon-clipped corners */
+.cyber-card {
+  background: var(--cyber-panel);
+  border: 1px solid var(--cyber-border);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 16px) 0,
+    100% 16px,
+    100% 100%,
+    16px 100%,
+    0 calc(100% - 16px)
+  );
+}
+
+.cyber-card:hover {
+  border-color: var(--cyber-accent-dim);
+  background: rgba(15, 25, 40, 0.9);
+  transform: translateY(-2px);
+}
+
+/* Selected card state */
+.cyber-card-selected {
+  border-color: var(--cyber-accent);
+  background: rgba(0, 255, 255, 0.03);
+  box-shadow:
+    inset 0 0 30px rgba(0, 255, 255, 0.05),
+    0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.cyber-card-selected::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 20px;
+  height: 20px;
+  border-top: 2px solid var(--cyber-accent);
+  border-left: 2px solid var(--cyber-accent);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.cyber-card-selected::after {
+  content: "";
+  position: absolute;
+  bottom: 15px;
+  right: -1px;
+  width: 20px;
+  height: 20px;
+  border-bottom: 2px solid var(--cyber-accent);
+  border-right: 2px solid var(--cyber-accent);
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Avatar frame */
+.cyber-avatar {
+  width: 90px;
+  height: 110px;
+  flex-shrink: 0;
+  position: relative;
+  border: 1px solid var(--cyber-accent-dim);
+  padding: 3px;
+  background: rgba(0, 255, 255, 0.05);
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 10px),
+    calc(100% - 10px) 100%,
+    0 100%
+  );
+  transition: border-color 0.3s;
+  overflow: hidden;
+}
+
+.cyber-card:hover .cyber-avatar {
+  border-color: var(--cyber-accent);
+}
+
+.cyber-avatar-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    0 100%
+  );
+  filter: grayscale(0.2) contrast(1.1) brightness(0.9);
+  transition: filter 0.3s ease, transform 0.5s ease;
+}
+
+.cyber-card:hover .cyber-avatar-inner {
+  filter: grayscale(0) contrast(1.1) brightness(1);
+  transform: scale(1.05);
+}
+
+/* Meta grid */
+.cyber-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--cyber-muted);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 8px 10px;
+  border-left: 2px solid var(--cyber-border);
+}
+
+.cyber-card:hover .cyber-meta-grid {
+  border-left-color: var(--cyber-accent-dim);
+}
+
+/* Status dot */
+.cyber-status-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--cyber-muted);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cyber-status-dot.active {
+  background: var(--cyber-accent);
+  box-shadow: 0 0 6px var(--cyber-accent);
+  animation: pulse-cyber 2s ease-in-out infinite;
+}
+
+.cyber-status-dot.danger {
+  background: var(--cyber-danger);
+  box-shadow: 0 0 6px var(--cyber-danger);
+}
+
+@keyframes pulse-cyber {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Connect button */
+.cyber-connect-btn {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  font-weight: bold;
+  color: var(--cyber-text-bright);
+  background: transparent;
+  border: 1px solid var(--cyber-accent-dim);
+  padding: 6px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+  letter-spacing: 1px;
+}
+
+.cyber-connect-btn::before {
+  content: ">_";
+  color: var(--cyber-accent);
+}
+
+.cyber-card:hover .cyber-connect-btn {
+  border-color: var(--cyber-accent);
+  background: rgba(0, 255, 255, 0.05);
+}
+
+.cyber-card-selected .cyber-connect-btn {
+  background: var(--cyber-accent);
+  color: #000;
+  border-color: var(--cyber-accent);
+}
+
+.cyber-card-selected .cyber-connect-btn::before {
+  color: #000;
+}
+
+/* Filter tab active state */
+.cyber-filter-active {
+  color: var(--cyber-accent);
+  font-weight: bold;
+  position: relative;
+}
+
+.cyber-filter-active::after {
+  content: "";
+  position: absolute;
+  bottom: -17px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--cyber-accent);
+  box-shadow: 0 -2px 8px rgba(0, 255, 255, 0.4);
+}
+
+/* Title glow */
+.cyber-glow-text {
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
+}
+
+/* Action button (INIT_GROUP_LINK) */
+.cyber-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(0, 255, 255, 0.05);
+  border: 1px solid var(--cyber-accent-dim);
+  padding: 8px 20px 8px 12px;
+  color: var(--cyber-accent);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 12px),
+    calc(100% - 12px) 100%,
+    0 100%
+  );
+  transition: all 0.2s;
+}
+
+.cyber-action-btn:hover {
+  background: rgba(0, 255, 255, 0.1);
+  border-color: var(--cyber-accent);
+}
+
+/* Mini avatar for action button cluster */
+.cyber-avatar-mini {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--cyber-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  clip-path: polygon(20% 0%, 100% 0%, 80% 100%, 0% 100%);
+  font-size: 10px;
+  font-weight: bold;
+  color: white;
+}
