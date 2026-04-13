@@ -174,74 +174,75 @@ export default function SoloChatPage() {
         </div>
       )}
 
-      {/* Chat Area — tablet-sized container */}
-      <div className="flex-1 flex flex-col items-center justify-center py-6 px-4">
-        {/* Chat window */}
-        <div
-          className="flex flex-col w-full rounded-lg overflow-hidden"
-          style={{
-            maxWidth: 680,
-            height: "calc(100vh - 48px)",
-            maxHeight: 900,
-            border: "1px solid var(--cyber-border)",
-            boxShadow: "0 0 40px rgba(0, 255, 255, 0.04), 0 8px 32px rgba(0, 0, 0, 0.5)",
-          }}
-        >
-          {/* Chat Header */}
-          <div className="border-b border-[var(--cyber-border)] bg-[var(--cyber-panel-dark)] px-4 py-2.5 flex items-center gap-3 shrink-0">
-            <button
-              onClick={() => setShowProfile(!showProfile)}
-              className="font-mono text-[10px] text-[var(--cyber-muted)] hover:text-[var(--cyber-accent)] uppercase tracking-[1px] bg-transparent border-none cursor-pointer transition-colors"
-            >
-              [{showProfile ? "HIDE" : "SHOW"}_PROFILE]
-            </button>
-            <div className="w-px h-4 bg-[var(--cyber-border)]" />
-            <div
-              className="w-6 h-6 flex items-center justify-center text-white text-[10px] font-bold"
-              style={{
-                backgroundColor: character.factionColor,
-                clipPath: "polygon(20% 0%, 100% 0%, 80% 100%, 0% 100%)",
-              }}
-            >
-              {character.name.charAt(0)}
+      {/* Center: Chat tablet + right side memory */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Chat centering area */}
+        <div className="flex-1 flex flex-col items-center justify-center py-4 px-4">
+          {/* Tablet-sized chat window */}
+          <div
+            className="flex flex-col w-full rounded-lg overflow-hidden"
+            style={{
+              maxWidth: 640,
+              height: "calc(100vh - 32px)",
+              maxHeight: 860,
+              border: "1px solid var(--cyber-border)",
+              boxShadow: "0 0 40px rgba(0, 255, 255, 0.04), 0 8px 32px rgba(0, 0, 0, 0.5)",
+            }}
+          >
+            {/* Chat Header */}
+            <div className="border-b border-[var(--cyber-border)] bg-[var(--cyber-panel-dark)] px-4 py-2.5 flex items-center gap-3 shrink-0">
+              <button
+                onClick={() => setShowProfile(!showProfile)}
+                className="font-mono text-[10px] text-[var(--cyber-muted)] hover:text-[var(--cyber-accent)] uppercase tracking-[1px] bg-transparent border-none cursor-pointer transition-colors"
+              >
+                [{showProfile ? "HIDE" : "SHOW"}_PROFILE]
+              </button>
+              <div className="w-px h-4 bg-[var(--cyber-border)]" />
+              <div
+                className="w-6 h-6 flex items-center justify-center text-white text-[10px] font-bold"
+                style={{
+                  backgroundColor: character.factionColor,
+                  clipPath: "polygon(20% 0%, 100% 0%, 80% 100%, 0% 100%)",
+                }}
+              >
+                {character.name.charAt(0)}
+              </div>
+              <span className="font-mono text-sm font-bold text-[var(--cyber-text-bright)] uppercase tracking-wider">
+                {character.name}
+              </span>
+              <span className="font-mono text-[9px] px-2 py-0.5 border border-[var(--cyber-accent-dim)] text-[var(--cyber-accent)] uppercase tracking-[1px]">
+                SOLO_INTERVIEW
+              </span>
+
+              <button
+                onClick={() => setShowMemory(!showMemory)}
+                className={`ml-auto font-mono text-[10px] uppercase tracking-[1px] px-3 py-1.5 border cursor-pointer transition-all ${
+                  showMemory
+                    ? "bg-[var(--cyber-accent)] text-black border-[var(--cyber-accent)]"
+                    : "bg-transparent text-[var(--cyber-muted)] border-[var(--cyber-border)] hover:border-[var(--cyber-accent-dim)] hover:text-[var(--cyber-text-bright)]"
+                }`}
+              >
+                {showMemory ? "HIDE_MEMORY" : "MEMORY"}
+              </button>
             </div>
-            <span className="font-mono text-sm font-bold text-[var(--cyber-text-bright)] uppercase tracking-wider">
-              {character.name}
-            </span>
-            <span className="font-mono text-[9px] px-2 py-0.5 border border-[var(--cyber-accent-dim)] text-[var(--cyber-accent)] uppercase tracking-[1px]">
-              SOLO_INTERVIEW
-            </span>
 
-            <button
-              onClick={() => setShowMemory(!showMemory)}
-              className={`ml-auto font-mono text-[10px] uppercase tracking-[1px] px-3 py-1.5 border cursor-pointer transition-all ${
-                showMemory
-                  ? "bg-[var(--cyber-accent)] text-black border-[var(--cyber-accent)]"
-                  : "bg-transparent text-[var(--cyber-muted)] border-[var(--cyber-border)] hover:border-[var(--cyber-accent-dim)] hover:text-[var(--cyber-text-bright)]"
-              }`}
-            >
-              {showMemory ? "HIDE_MEMORY" : "MEMORY"}
-            </button>
-          </div>
-
-          {/* Chat + Memory row */}
-          <div className="flex-1 flex overflow-hidden" style={{ backgroundColor: "var(--cyber-bg)" }}>
-            <div className="flex-1">
+            {/* Chat content */}
+            <div className="flex-1 overflow-hidden" style={{ backgroundColor: "var(--cyber-bg)" }}>
               <ChatInterface
                 project={project}
                 character={character}
                 mode="solo"
               />
             </div>
-
-            {/* Memory Panel */}
-            <MemoryPanel
-              characterName={character.name}
-              open={showMemory}
-              onClose={() => setShowMemory(false)}
-            />
           </div>
         </div>
+
+        {/* Memory Panel — right sidebar, outside the tablet */}
+        <MemoryPanel
+          characterName={character.name}
+          open={showMemory}
+          onClose={() => setShowMemory(false)}
+        />
       </div>
     </div>
   );
