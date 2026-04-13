@@ -24,6 +24,7 @@ export function MemoryPanel({ characterName, open, onClose }: MemoryPanelProps) 
   const [forgetTopic, setForgetTopic] = useState("");
   const [forgetting, setForgetting] = useState(false);
   const [available, setAvailable] = useState(true);
+  const [provider, setProvider] = useState<"local" | "zep" | null>(null);
 
   const loadMemories = useCallback(async () => {
     setLoading(true);
@@ -32,6 +33,7 @@ export function MemoryPanel({ characterName, open, onClose }: MemoryPanelProps) 
       const data = await res.json();
       setMemories(data.memories || []);
       setAvailable(data.available !== false);
+      setProvider(data.provider ?? null);
     } catch {
       setMemories([]);
     } finally {
@@ -103,8 +105,7 @@ export function MemoryPanel({ characterName, open, onClose }: MemoryPanelProps) 
 
       {!available && (
         <div className="p-4 text-xs text-muted-foreground text-center">
-          Zep not connected. Memories are disabled.
-          <br />Check ZEP_API_KEY in .env.local
+          Memory system error. Unable to load memories.
         </div>
       )}
 
@@ -166,10 +167,20 @@ export function MemoryPanel({ characterName, open, onClose }: MemoryPanelProps) 
 
       {/* Footer */}
       {available && memories.length > 0 && (
-        <div className="p-3 border-t">
+        <div className="p-3 border-t flex items-center gap-2">
           <Badge variant="secondary" className="text-[10px]">
             {memories.length} memories
           </Badge>
+          {provider === "zep" && (
+            <Badge variant="outline" className="text-[10px] border-primary text-primary">
+              Zep Cloud
+            </Badge>
+          )}
+          {provider === "local" && (
+            <Badge variant="outline" className="text-[10px] text-muted-foreground">
+              Local
+            </Badge>
+          )}
         </div>
       )}
     </div>

@@ -35,6 +35,7 @@ export interface Character {
   arc: string;
   secrets: string[];
   simulationMemory: string;
+  coreMemories?: string[];
   stats: CharacterStats;
 }
 

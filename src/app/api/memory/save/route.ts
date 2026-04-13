@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { saveMemory, characterUserId } from "@/lib/zep";
+import { createMemoryProvider } from "@/lib/memory-provider";
+import { characterUserId } from "@/lib/zep";
 
-/** POST /api/memory/save — save a conversation exchange to Zep after streaming completes */
+/** POST /api/memory/save — save a conversation exchange to memory after streaming completes */
 export async function POST(request: NextRequest) {
   const body = await request.json();
   const { characterId, characterName, userMessage, assistantResponse } = body;
@@ -13,7 +14,8 @@ export async function POST(request: NextRequest) {
   const userId = characterUserId(characterId, characterName);
 
   try {
-    await saveMemory(userId, [
+    const provider = await createMemoryProvider("oro-verde");
+    await provider.saveMemory(userId, [
       { role: "user", content: userMessage, roleType: "interviewer" },
       { role: "assistant", content: assistantResponse, roleType: characterName },
     ]);

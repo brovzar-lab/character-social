@@ -41,6 +41,7 @@ interface FormData {
   relationships: Relationship[];
   arc: string;
   secrets: string[];
+  coreMemories: string[];
   simulationMemory: string;
   stats: CharacterStats;
 }
@@ -64,6 +65,7 @@ const DEFAULT_CHARACTER: FormData = {
   relationships: [],
   arc: "",
   secrets: [],
+  coreMemories: [],
   simulationMemory: "",
   stats: { totalActions: 0, postCount: 0, commentCount: 0, rounds: 0 },
 };
@@ -91,6 +93,7 @@ type SectionKey =
   | "voice"
   | "relationships"
   | "secrets"
+  | "coreMemories"
   | "stats"
   | "memory";
 
@@ -126,6 +129,7 @@ export function CharacterForm({
         relationships: character.relationships,
         arc: character.arc,
         secrets: character.secrets,
+        coreMemories: character.coreMemories || [],
         simulationMemory: character.simulationMemory,
         stats: character.stats,
       }
@@ -590,6 +594,33 @@ export function CharacterForm({
             multiline
             placeholder="A secret this character holds..."
           />
+        )}
+      </div>
+
+      {/* SECTION: CORE MEMORIES */}
+      <div className="cyber-form-section">
+        <div
+          className="cyber-form-section-header"
+          onClick={() => toggleSection("coreMemories")}
+        >
+          <span className="flex-1">CORE MEMORIES</span>
+          <span className="text-[var(--cyber-muted)]">
+            {openSections.has("coreMemories") ? "[-]" : "[+]"}
+          </span>
+        </div>
+        {openSections.has("coreMemories") && (
+          <div>
+            <p className="font-mono text-[10px] text-[var(--cyber-muted)] uppercase tracking-[1px] mb-3">
+              Critical facts injected at highest priority in every conversation. Characters will ALWAYS know these.
+            </p>
+            <ListEditor
+              items={form.coreMemories}
+              onChange={(items) => updateField("coreMemories", items)}
+              label="Core Memory"
+              multiline
+              placeholder="Critical fact this character must always know..."
+            />
+          </div>
         )}
       </div>
 
