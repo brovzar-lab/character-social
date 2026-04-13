@@ -426,3 +426,200 @@
   font-weight: bold;
   color: white;
 }
+
+/* ═══════════════════════════════════════════
+   ADMIN — Form & Terminal Styles
+   ═══════════════════════════════════════════ */
+
+.cyber-form-section {
+  background: var(--cyber-panel);
+  border: 1px solid var(--cyber-border);
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+
+.cyber-form-section-header {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  font-weight: bold;
+  color: var(--cyber-accent);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--cyber-border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.cyber-form-section-header::before {
+  content: "//";
+  color: var(--cyber-accent-dim);
+}
+
+.cyber-input {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--cyber-border);
+  color: var(--cyber-text);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 13px;
+  padding: 8px 12px;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.cyber-input:focus {
+  outline: none;
+  border-color: var(--cyber-accent);
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.1);
+}
+
+.cyber-input::placeholder {
+  color: var(--cyber-muted);
+  opacity: 0.5;
+}
+
+.cyber-textarea {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--cyber-border);
+  color: var(--cyber-text);
+  font-size: 13px;
+  padding: 10px 12px;
+  transition: border-color 0.2s;
+  width: 100%;
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.6;
+}
+
+.cyber-textarea:focus {
+  outline: none;
+  border-color: var(--cyber-accent);
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.1);
+}
+
+.cyber-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0, 255, 255, 0.08);
+  border: 1px solid var(--cyber-accent-dim);
+  color: var(--cyber-accent);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  padding: 3px 8px;
+  cursor: default;
+}
+
+.cyber-tag button {
+  background: none;
+  border: none;
+  color: var(--cyber-muted);
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.cyber-tag button:hover {
+  color: var(--cyber-danger);
+}
+
+.cyber-terminal {
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--cyber-border);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 12px;
+  color: var(--cyber-muted);
+  padding: 12px 16px;
+  overflow-y: auto;
+  max-height: 400px;
+  line-height: 1.8;
+}
+
+.cyber-terminal .log-success {
+  color: var(--cyber-accent);
+}
+
+.cyber-terminal .log-error {
+  color: var(--cyber-danger);
+}
+
+.cyber-terminal .log-info {
+  color: var(--cyber-muted);
+}
+
+/* Admin nav breadcrumb */
+.cyber-breadcrumb {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+  color: var(--cyber-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cyber-breadcrumb a {
+  color: var(--cyber-accent);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.cyber-breadcrumb a:hover {
+  text-shadow: 0 0 8px var(--cyber-accent);
+}
+
+.cyber-breadcrumb .separator {
+  color: var(--cyber-accent-dim);
+}
+
+/* Admin card variant with edit/delete actions */
+.cyber-admin-card {
+  background: var(--cyber-panel);
+  border: 1px solid var(--cyber-border);
+  transition: all 0.2s ease;
+}
+
+.cyber-admin-card:hover {
+  border-color: var(--cyber-accent-dim);
+  background: rgba(15, 25, 40, 0.9);
+}
+
+/* Small action buttons for admin */
+.cyber-btn-sm {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid;
+}
+
+.cyber-btn-sm.accent {
+  color: var(--cyber-accent);
+  border-color: var(--cyber-accent-dim);
+  background: transparent;
+}
+
+.cyber-btn-sm.accent:hover {
+  background: rgba(0, 255, 255, 0.1);
+  border-color: var(--cyber-accent);
+}
+
+.cyber-btn-sm.danger {
+  color: var(--cyber-danger);
+  border-color: rgba(255, 0, 85, 0.3);
+  background: transparent;
+}
+
+.cyber-btn-sm.danger:hover {
+  background: rgba(255, 0, 85, 0.1);
+  border-color: var(--cyber-danger);
+}

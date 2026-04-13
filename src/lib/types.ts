@@ -20,6 +20,9 @@ export interface Character {
   profession: string;
   country: string;
   mbti: string;
+  enneagramType?: number;
+  enneagramWing?: number;
+  enneagramDescription?: string;
   bio: string;
   persona: string;
   faction: string;
@@ -74,4 +77,5 @@ export interface ProjectMeta {
   characterCount: number;
   totalActions: number;
   exportDate: string;
+  simulationRequirement?: string;
 }
