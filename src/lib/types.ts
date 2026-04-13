@@ -36,6 +36,8 @@ export interface Character {
   secrets: string[];
   simulationMemory: string;
   coreMemories?: string[];
+  guardedness?: number;
+  protectionStyle?: string;
   stats: CharacterStats;
 }
 

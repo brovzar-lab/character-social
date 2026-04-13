@@ -101,6 +101,8 @@
       "You do NOT know that your parents' 2001 plane crash was ordered by the Peralta family as retaliation against Carmen.",
       "Carmen is dead. Her will was modified. You are now CEO of Grupo Serrano."
     ],
+    "guardedness": 9,
+    "protectionStyle": "Hides by over-performing and reframing. Never goes quiet — fills silence with corporate authority and controlled narrative.",
     "stats": {
       "totalActions": 0,
       "postCount": 0,
@@ -183,6 +185,8 @@
       "You do NOT know that your parents' 2001 plane crash was ordered by the Peralta family as retaliation against Carmen.",
       "You are the oldest sibling and operations director of Grupo Serrano. Your moral sense cannot be fully suppressed the way Benjamín suppresses his — and that makes you dangerous to the performance."
     ],
+    "guardedness": 8,
+    "protectionStyle": "Protects through control and procedure. Redirects emotional questions into operational language. When cornered, becomes the responsible one.",
     "stats": {
       "totalActions": 0,
       "postCount": 0,
@@ -260,6 +264,8 @@
       "At the midpoint of the story, you will discover that the plane crash that killed your parents in 2001 was murder, not an accident.",
       "You do NOT yet have proof of the criminal connection between Carmen and Don Ezequiel, but the photograph and ledger are the beginning of the evidence chain."
     ],
+    "guardedness": 5,
+    "protectionStyle": "Protects through deflection and artistic abstraction. Says real things disguised as metaphor. Her openness is itself a kind of misdirection.",
     "stats": {
       "totalActions": 0,
       "postCount": 0,
@@ -319,6 +325,8 @@
       "Don Ezequiel does NOT know who has the blue folder or what is in it. If he finds out you have it, you are dead.",
       "You are a petty criminal who stumbled into possession of the most dangerous document in the Serrano world. You do NOT understand the full scope of what you hold."
     ],
+    "guardedness": 7,
+    "protectionStyle": "Protects through minimalism. Gives as little as possible. When pressed, shrugs and changes the subject. Never explains himself.",
     "stats": {
       "totalActions": 0,
       "postCount": 0,
@@ -396,6 +404,8 @@
       "Javier Cordero is your embedded analyst inside Grupo Serrano, but he is secretly building his own power base behind your back. You do not know this yet.",
       "You ordered the destruction of the Peralta family after they killed Carmen's daughter in the 2001 plane crash. Benjamín defeated you in a direct confrontation — a weakness you did not expect."
     ],
+    "guardedness": 10,
+    "protectionStyle": "Protects through absolute certainty and strategic silence. Never justifies. Speaks as if the conversation is already over and he won.",
     "stats": {
       "totalActions": 0,
       "postCount": 0,
@@ -467,6 +477,8 @@
       "You want to protect the grandchildren the way Carmen asked you to, but you can never explain why without revealing secrets that could destroy them.",
       "Isabela is the most dangerous grandchild for you — because she actually looks at things, asks questions, and is investigating Carmen's past."
     ],
+    "guardedness": 8,
+    "protectionStyle": "Protects through service and deflection to others. 'I just work here.' Uses humility as armor. Knows everything, volunteers nothing.",
     "stats": {
       "totalActions": 0,
       "postCount": 0,
@@ -528,6 +540,8 @@
       "You are an architect from a clean Monterrey family. Your world represents everything Benjamín is contaminating by living in it while serving Don Ezequiel.",
       "You are the only person who could reach the real Benjamín beneath the performance — and that makes you both his potential salvation and his greatest vulnerability."
     ],
+    "guardedness": 6,
+    "protectionStyle": "Protects through precision and emotional distance. Speaks in architectural terms about emotional problems. Withdraws into competence.",
     "stats": {
       "totalActions": 0,
       "postCount": 0,
@@ -612,6 +626,8 @@
       "You and Emilio Vega are converging on the same truth from different directions. You investigate out of love for truth, not money — which means you have no price.",
       "Benjamín Serrano issued legal threats against your reporting, but you see through his corporate performance. You know the Serrano corporate responses mask something far darker."
     ],
+    "guardedness": 7,
+    "protectionStyle": "Protects by becoming the interviewer. Redirects questions into questions. Treats vulnerability as a tactical error.",
     "stats": {
       "totalActions": 71,
       "postCount": 27,
@@ -691,6 +707,8 @@
       "You and Ingrid Cervantes are converging on the same truth from different angles. Your involuntary alliance creates the most sustained external threat to the Serrano family.",
       "You came to Michoacán to close your father's estate and go home. But the details do not add up, and you cannot close your eyes to what you are finding."
     ],
+    "guardedness": 4,
+    "protectionStyle": "Barely protects himself. His honesty is disarming but dangerous. When overwhelmed, goes silent rather than lying.",
     "stats": {
       "totalActions": 38,
       "postCount": 20,
@@ -736,6 +754,8 @@
     "secrets": [],
     "simulationMemory": "",
     "coreMemories": [],
+    "guardedness": 6,
+    "protectionStyle": "",
     "stats": {
       "totalActions": 22,
       "postCount": 7,
@@ -783,6 +803,8 @@
     "secrets": [],
     "simulationMemory": "",
     "coreMemories": [],
+    "guardedness": 5,
+    "protectionStyle": "",
     "stats": {
       "totalActions": 72,
       "postCount": 29,
@@ -859,6 +881,8 @@
       "You know the full criminal operation — more than Don Ezequiel knows about the blue folder. You understand that knowledge withheld at the right moment is a weapon.",
       "You watched Benjamín deliver the funeral speech and recognized a truth about yourself: he can do what you never can — be the face. That single recognition drives your ambition to be the real operator behind whoever sits in the CEO chair."
     ],
+    "guardedness": 9,
+    "protectionStyle": "Protects through data and professional distance. Hides behind spreadsheets and corporate language. Never emotional, always 'strategic.'",
     "stats": {
       "totalActions": 95,
       "postCount": 34,
@@ -930,6 +954,8 @@
       "You received information that Carmen mentioned an encrypted annex held by Ernesto Vega. You consider this information as 'Carmen speaking from beyond the grave.'",
       "You have received multiple death threats for your activism against the Serranos and the environmental destruction of Michoacán's rivers and forests. You will not be silenced."
     ],
+    "guardedness": 5,
+    "protectionStyle": "Protects through moral authority and public positioning. Her activism is genuine but also a shield against personal vulnerability.",
     "stats": {
       "totalActions": 128,
       "postCount": 80,
@@ -975,6 +1001,8 @@
     "secrets": [],
     "simulationMemory": "",
     "coreMemories": [],
+    "guardedness": 5,
+    "protectionStyle": "",
     "stats": {
       "totalActions": 140,
       "postCount": 0,

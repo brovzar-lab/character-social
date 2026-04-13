@@ -30,6 +30,8 @@ interface FormData {
   enneagramType?: number;
   enneagramWing?: number;
   enneagramDescription?: string;
+  guardedness: number;
+  protectionStyle: string;
   bio: string;
   persona: string;
   faction: string;
@@ -54,6 +56,8 @@ const DEFAULT_CHARACTER: FormData = {
   profession: "",
   country: "",
   mbti: "INTJ",
+  guardedness: 7,
+  protectionStyle: "",
   bio: "",
   persona: "",
   faction: "unknown",
@@ -118,6 +122,8 @@ export function CharacterForm({
         enneagramType: character.enneagramType,
         enneagramWing: character.enneagramWing,
         enneagramDescription: character.enneagramDescription,
+        guardedness: character.guardedness ?? 7,
+        protectionStyle: character.protectionStyle ?? "",
         bio: character.bio,
         persona: character.persona,
         faction: character.faction,
@@ -372,6 +378,44 @@ export function CharacterForm({
                 placeholder="Core fear, desire, and defense mechanism..."
                 rows={3}
               />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[11px] text-[var(--cyber-muted)] uppercase tracking-[1px] mb-1 block">
+                  Guardedness
+                </label>
+                <span className="font-mono text-[9px] text-[var(--cyber-muted)] block mb-1">
+                  (1=open, 10=stone wall)
+                </span>
+                <input
+                  type="number"
+                  className="cyber-input"
+                  value={form.guardedness}
+                  onChange={(e) =>
+                    updateField(
+                      "guardedness",
+                      Math.min(10, Math.max(1, parseInt(e.target.value, 10) || 1))
+                    )
+                  }
+                  min={1}
+                  max={10}
+                />
+              </div>
+              <div>
+                <label className="font-mono text-[11px] text-[var(--cyber-muted)] uppercase tracking-[1px] mb-1 block">
+                  Protection Style
+                </label>
+                <span className="font-mono text-[9px] text-[var(--cyber-muted)] block mb-1">
+                  How this character type protects itself (one line)
+                </span>
+                <input
+                  type="text"
+                  className="cyber-input"
+                  value={form.protectionStyle}
+                  onChange={(e) => updateField("protectionStyle", e.target.value)}
+                  placeholder="How this character type protects itself (one line)"
+                />
+              </div>
             </div>
           </div>
         )}
