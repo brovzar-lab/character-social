@@ -73,7 +73,7 @@ export function CharacterGridCard({
           <span
             className={`cyber-status-dot ${stanceDotClass(character.stance)}`}
           />
-          ACT: {character.stats.totalActions} // {character.stance.toUpperCase()}
+          {`ACT: ${character.stats.totalActions} // ${character.stance.toUpperCase()}`}
         </div>
         <div className="flex gap-2">
           <button

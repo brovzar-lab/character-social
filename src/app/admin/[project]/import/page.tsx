@@ -46,7 +46,7 @@ export default function ImportPage() {
           </h1>
           <div className="font-mono text-[13px] text-[var(--cyber-accent-dim)] flex items-center gap-3 tracking-[1px]">
             <span className="inline-block w-1.5 h-1.5 bg-[var(--cyber-accent)] shadow-[0_0_8px_var(--cyber-accent)]" />
-            PROJECT: {project.replace(/-/g, "_").toUpperCase()} // MIROFISH_IMPORT
+            {`PROJECT: ${project.replace(/-/g, "_").toUpperCase()} // MIROFISH_IMPORT`}
           </div>
         </div>
 
