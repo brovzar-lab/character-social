@@ -3,7 +3,6 @@ import { getCharacter } from "@/lib/characters";
 import { buildSystemPrompt, buildMessages } from "@/lib/prompts";
 import { streamChat } from "@/lib/llm";
 import { createMemoryProvider } from "@/lib/memory-provider";
-import { characterUserId } from "@/lib/zep";
 import type { Message, ConversationMode } from "@/lib/types";
 
 export async function POST(request: NextRequest) {
@@ -48,17 +47,8 @@ export async function POST(request: NextRequest) {
   // Stream the response
   const stream = await streamChat(messages);
 
-  // Save this exchange to memory in background (don't block the stream)
-  const userId = characterUserId(characterId, character.name);
-  createMemoryProvider("oro-verde")
-    .then(provider =>
-      provider.saveMemory(userId, [
-        { role: "user", content: message, roleType: "interviewer" },
-        // We'll save the assistant response after streaming completes on the client side
-        // For now, save the question so the provider knows what was asked
-      ])
-    )
-    .catch(e => console.error("Memory save error (non-fatal):", e));
+  // Memory is saved by the client via /api/memory/save after streaming completes
+  // (includes both user message and full assistant response)
 
   return new Response(stream, {
     headers: {

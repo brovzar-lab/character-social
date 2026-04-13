@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -10,6 +10,45 @@ interface Memory {
   uuid: string;
   fact: string;
   createdAt?: string;
+}
+
+const HIGHLIGHT_KEYWORDS = new Set([
+  "Carmen", "Serrano", "Benjamín", "Benjamin", "Karla", "Isabela",
+  "Ezequiel", "Ingrid", "Cervantes", "Emilio", "Vega", "Javier", "Cordero",
+  "Gabriela", "Valeria", "Lucía", "Reynaldo",
+  "criminal", "empire", "cartel", "murder", "investigation", "folder",
+  "death", "killed", "trafficking", "threat", "evidence", "secret",
+  "abuela", "grandmother", "siblings", "family", "legacy",
+  "Don", "Grupo", "Peralta",
+]);
+
+function highlightText(text: string): React.ReactNode[] {
+  // Split on word boundaries while preserving whitespace and punctuation
+  const tokens = text.split(/(\s+)/);
+  return tokens.map((token, i) => {
+    // Strip leading/trailing punctuation for keyword matching
+    const stripped = token.replace(/^[^a-zA-ZáéíóúñÁÉÍÓÚÑ]+|[^a-zA-ZáéíóúñÁÉÍÓÚÑ]+$/g, "");
+    if (stripped && HIGHLIGHT_KEYWORDS.has(stripped)) {
+      return (
+        <span key={i} className="text-[var(--cyber-accent)] font-medium">
+          {token}
+        </span>
+      );
+    }
+    // Also check case-insensitive
+    if (stripped) {
+      for (const kw of HIGHLIGHT_KEYWORDS) {
+        if (kw.toLowerCase() === stripped.toLowerCase()) {
+          return (
+            <span key={i} className="text-[var(--cyber-accent)] font-medium">
+              {token}
+            </span>
+          );
+        }
+      }
+    }
+    return <span key={i}>{token}</span>;
+  });
 }
 
 interface MemoryPanelProps {
@@ -148,7 +187,7 @@ export function MemoryPanel({ characterName, open, onClose }: MemoryPanelProps) 
 
           {memories.map((m) => (
             <div key={m.uuid} className="group relative bg-muted rounded-lg p-2.5 text-xs leading-relaxed">
-              <p>{m.fact}</p>
+              <p>{highlightText(m.fact)}</p>
               {m.createdAt && (
                 <p className="text-[9px] text-muted-foreground mt-1">
                   {new Date(m.createdAt).toLocaleDateString()}

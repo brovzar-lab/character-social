@@ -150,6 +150,21 @@ export class LocalMemoryProvider implements MemoryProvider {
     };
 
     const memories = readMemories(filePath);
+
+    // Deduplication: skip if a very similar fact was saved in the last 60 seconds
+    const now = Date.now();
+    const factWords = new Set(fact.toLowerCase().split(/\s+/));
+    const isDuplicate = memories.some((existing) => {
+      const age = now - new Date(existing.createdAt).getTime();
+      if (age > 60_000) return false;
+      const existingWords = new Set(existing.fact.toLowerCase().split(/\s+/));
+      const overlap = [...factWords].filter((w) => existingWords.has(w)).length;
+      const similarity = overlap / Math.max(factWords.size, existingWords.size);
+      return similarity > 0.8;
+    });
+
+    if (isDuplicate) return;
+
     memories.push(entry);
     writeMemories(filePath, memories);
   }

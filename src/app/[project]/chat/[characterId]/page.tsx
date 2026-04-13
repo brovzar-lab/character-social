@@ -84,6 +84,11 @@ export default function SoloChatPage() {
               <span className="font-mono text-[9px] uppercase tracking-[1px] px-2 py-0.5 border border-[var(--cyber-border)] text-[var(--cyber-muted)]">
                 AGE:{character.age}
               </span>
+              {character.enneagramType && character.enneagramWing && (
+                <span className="font-mono text-[9px] uppercase tracking-[1px] px-2 py-0.5 border border-[var(--cyber-border)] text-[var(--cyber-muted)]">
+                  E{character.enneagramType}w{character.enneagramWing}
+                </span>
+              )}
             </div>
 
             {/* Separator */}
@@ -95,6 +100,40 @@ export default function SoloChatPage() {
                 <h3 className="font-mono text-[9px] uppercase tracking-[1px] text-[var(--cyber-accent-dim)] mb-1.5">BIO</h3>
                 <p className="text-[12px] text-[var(--cyber-text)] leading-relaxed">{character.bio}</p>
               </div>
+
+              {character.enneagramType && (() => {
+                const typeNames: Record<number, string> = {
+                  1: "Reformer", 2: "Helper", 3: "Performer", 4: "Individualist",
+                  5: "Investigator", 6: "Loyalist", 7: "Enthusiast", 8: "Challenger", 9: "Peacemaker",
+                };
+                const guardedness = character.guardedness ?? 5;
+                const filled = guardedness;
+                const empty = 10 - filled;
+                return (
+                  <div>
+                    <h3 className="font-mono text-[9px] uppercase tracking-[1px] text-[var(--cyber-accent-dim)] mb-1.5">PSYCHOLOGY</h3>
+                    <p className="font-mono text-[11px] text-[var(--cyber-text-bright)]">
+                      Type {character.enneagramType} — The {typeNames[character.enneagramType] ?? "Unknown"}
+                    </p>
+                    {character.enneagramWing && (
+                      <p className="font-mono text-[11px] text-[var(--cyber-muted)]">
+                        Wing {character.enneagramWing}
+                      </p>
+                    )}
+                    <div className="font-mono text-[11px] text-[var(--cyber-muted)] mt-1">
+                      <span>Guardedness: </span>
+                      <span className="text-[var(--cyber-accent)]">{"█".repeat(filled)}</span>
+                      <span className="text-[var(--cyber-border)]">{"░".repeat(empty)}</span>
+                      <span className="ml-1">{guardedness}/10</span>
+                    </div>
+                    {character.enneagramDescription && (
+                      <p className="text-[11px] text-[var(--cyber-text)] leading-relaxed mt-1.5">
+                        {character.enneagramDescription}
+                      </p>
+                    )}
+                  </div>
+                );
+              })()}
 
               {character.relationships.length > 0 && (
                 <div>

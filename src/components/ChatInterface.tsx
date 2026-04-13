@@ -2,8 +2,6 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import type { Character, Message, ConversationMode } from "@/lib/types";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ChatInterfaceProps {
@@ -24,13 +22,12 @@ export function ChatInterface({
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [isStreaming, setIsStreaming] = useState(false);
+  const bottomRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = useCallback(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
   useEffect(() => {
@@ -108,6 +105,7 @@ export function ChatInterface({
         };
 
         setMessages(prev => [...prev, assistantMessage]);
+        setIsStreaming(true);
 
         while (reader) {
           const { done, value } = await reader.read();
@@ -126,12 +124,15 @@ export function ChatInterface({
                     m.id === assistantMessage.id ? { ...m, content: fullContent } : m
                   )
                 );
+                scrollToBottom();
               } catch {
                 // Skip malformed chunks
               }
             }
           }
         }
+
+        setIsStreaming(false);
 
         // If streaming didn't work, try JSON fallback
         if (!fullContent) {
@@ -176,6 +177,7 @@ export function ChatInterface({
       ]);
     } finally {
       setIsLoading(false);
+      setIsStreaming(false);
     }
   };
 
@@ -194,15 +196,25 @@ export function ChatInterface({
     return null;
   };
 
+  // Determine if consecutive messages are from the same sender
+  const isSameSender = (current: Message, previous: Message | undefined) => {
+    if (!previous) return false;
+    if (current.role === "user" && previous.role === "user") return true;
+    if (current.role === "assistant" && previous.role === "assistant" && current.characterId === previous.characterId) return true;
+    return false;
+  };
+
   return (
     <div className="flex flex-col h-full">
-      {/* Messages */}
-      <ScrollArea className="flex-1 p-4" ref={scrollRef}>
-        <div className="space-y-4 max-w-3xl mx-auto">
+      {/* Messages area */}
+      <ScrollArea className="flex-1">
+        <div className="px-4 py-4">
           {messages.length === 0 && (
-            <div className="text-center py-20 text-muted-foreground">
-              <p className="text-lg font-medium">Start a conversation</p>
-              <p className="text-sm mt-1">
+            <div className="text-center py-20">
+              <p className="text-base font-medium" style={{ color: "var(--cyber-text)" }}>
+                Start a conversation
+              </p>
+              <p className="text-sm mt-1" style={{ color: "var(--cyber-muted)" }}>
                 {mode === "solo" && `Talk to ${character.name} — they'll respond in character.`}
                 {mode === "confrontation" && `Moderate a conversation between ${character.name} and ${otherCharacter?.name}.`}
                 {mode === "room" && `Ask a question — all characters in the room will respond.`}
@@ -210,90 +222,200 @@ export function ChatInterface({
             </div>
           )}
 
-          {messages.map((msg) => {
-            const msgChar = getCharacterForMessage(msg);
-            const isUser = msg.role === "user";
+          <div className="flex flex-col">
+            {messages.map((msg, index) => {
+              const msgChar = getCharacterForMessage(msg);
+              const isUser = msg.role === "user";
+              const sameSender = isSameSender(msg, messages[index - 1]);
+              const showAvatar = !isUser && msgChar && !sameSender;
+              const showName = !isUser && msgChar && !sameSender;
 
-            return (
-              <div
-                key={msg.id}
-                className={`flex gap-3 ${isUser ? "justify-end" : "justify-start"}`}
-              >
-                {!isUser && msgChar && (
-                  <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0 mt-1"
-                    style={{ backgroundColor: msgChar.factionColor }}
-                  >
-                    {msgChar.name.charAt(0)}
-                  </div>
-                )}
+              return (
                 <div
-                  className={`max-w-[75%] rounded-2xl px-4 py-2.5 ${
-                    isUser
-                      ? "bg-foreground text-background"
-                      : "bg-muted"
-                  }`}
+                  key={msg.id}
+                  className={sameSender ? "mt-1" : "mt-3"}
+                  style={index === 0 ? { marginTop: 0 } : undefined}
                 >
-                  {!isUser && msgChar && (
-                    <p className="text-xs font-semibold mb-1" style={{ color: msgChar.factionColor }}>
-                      {msgChar.name}
-                    </p>
-                  )}
-                  <p className="text-sm whitespace-pre-wrap leading-relaxed">{msg.content}</p>
-                </div>
-              </div>
-            );
-          })}
+                  <div className={`flex items-end gap-2 ${isUser ? "justify-end" : "justify-start"}`}>
+                    {/* Character avatar spacer / avatar */}
+                    {!isUser && (
+                      <div className="w-7 shrink-0">
+                        {showAvatar && msgChar && (
+                          <div
+                            className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[11px] font-bold"
+                            style={{ backgroundColor: msgChar.factionColor }}
+                          >
+                            {msgChar.name.charAt(0)}
+                          </div>
+                        )}
+                      </div>
+                    )}
 
-          {isLoading && mode !== "room" && (
-            <div className="flex gap-3">
-              <div
-                className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
-                style={{ backgroundColor: character.factionColor }}
-              >
-                {character.name.charAt(0)}
-              </div>
-              <div className="bg-muted rounded-2xl px-4 py-3">
-                <div className="flex gap-1">
-                  <span className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                  <span className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                  <span className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                    {/* Message bubble */}
+                    <div className="max-w-[80%]">
+                      {/* Character name label */}
+                      {showName && msgChar && (
+                        <p
+                          className="text-[11px] font-mono mb-1 ml-1"
+                          style={{ color: "var(--cyber-accent)" }}
+                        >
+                          {msgChar.name}
+                        </p>
+                      )}
+
+                      <div
+                        className="px-3.5 py-2.5"
+                        style={
+                          isUser
+                            ? {
+                                backgroundColor: "rgba(0, 255, 255, 0.03)",
+                                border: "1px solid rgba(0, 255, 255, 0.08)",
+                                borderRadius: "18px 18px 4px 18px",
+                                color: "var(--cyber-text)",
+                              }
+                            : {
+                                backgroundColor: "var(--cyber-panel)",
+                                border: "1px solid var(--cyber-border)",
+                                borderRadius: "18px 18px 18px 4px",
+                                color: "var(--cyber-text)",
+                              }
+                        }
+                      >
+                        <p className="text-sm whitespace-pre-wrap leading-relaxed">
+                          {msg.content}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* Streaming dots indicator */}
+            {isLoading && !isStreaming && mode !== "room" && (
+              <div className="mt-3">
+                <div className="flex items-end gap-2 justify-start">
+                  <div className="w-7 shrink-0">
+                    <div
+                      className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[11px] font-bold"
+                      style={{ backgroundColor: character.factionColor }}
+                    >
+                      {character.name.charAt(0)}
+                    </div>
+                  </div>
+                  <div
+                    className="px-4 py-3"
+                    style={{
+                      backgroundColor: "var(--cyber-panel)",
+                      border: "1px solid var(--cyber-border)",
+                      borderRadius: "18px 18px 18px 4px",
+                    }}
+                  >
+                    <div className="flex gap-1 items-center">
+                      <span
+                        className="w-1.5 h-1.5 rounded-full animate-pulse"
+                        style={{ backgroundColor: "var(--cyber-accent-dim)", animationDelay: "0ms" }}
+                      />
+                      <span
+                        className="w-1.5 h-1.5 rounded-full animate-pulse"
+                        style={{ backgroundColor: "var(--cyber-accent-dim)", animationDelay: "300ms" }}
+                      />
+                      <span
+                        className="w-1.5 h-1.5 rounded-full animate-pulse"
+                        style={{ backgroundColor: "var(--cyber-accent-dim)", animationDelay: "600ms" }}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+
+            {/* Streaming in-progress dots (below the active message) */}
+            {isStreaming && (
+              <div className="mt-1 ml-9 flex gap-1 items-center px-2 py-1">
+                <span
+                  className="w-1 h-1 rounded-full animate-pulse"
+                  style={{ backgroundColor: "var(--cyber-accent-dim)", animationDelay: "0ms" }}
+                />
+                <span
+                  className="w-1 h-1 rounded-full animate-pulse"
+                  style={{ backgroundColor: "var(--cyber-accent-dim)", animationDelay: "300ms" }}
+                />
+                <span
+                  className="w-1 h-1 rounded-full animate-pulse"
+                  style={{ backgroundColor: "var(--cyber-accent-dim)", animationDelay: "600ms" }}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Scroll sentinel */}
+          <div ref={bottomRef} />
         </div>
       </ScrollArea>
 
-      {/* Input */}
-      <div className="border-t p-4">
-        <div className="max-w-3xl mx-auto flex gap-2">
-          <Textarea
-            ref={textareaRef}
+      {/* Input area */}
+      <div
+        className="px-4 py-3"
+        style={{
+          backgroundColor: "rgba(5, 5, 10, 0.95)",
+          borderTop: "1px solid var(--cyber-border)",
+        }}
+      >
+        <div className="flex items-center gap-2 max-w-3xl mx-auto">
+          <input
+            ref={inputRef}
+            type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={
-              mode === "solo"
-                ? `Talk to ${character.name}...`
-                : mode === "confrontation"
-                ? `Moderate the conversation...`
-                : `Ask the room a question...`
-            }
-            className="resize-none min-h-[44px] max-h-[120px]"
-            rows={1}
+            placeholder="Ask something..."
             disabled={isLoading}
+            className="flex-1 bg-transparent text-sm outline-none placeholder:text-[var(--cyber-muted)]"
+            style={{
+              color: "var(--cyber-text)",
+              border: "1px solid var(--cyber-border)",
+              borderRadius: "9999px",
+              padding: "10px 16px",
+              backgroundColor: "rgba(10, 15, 25, 0.6)",
+              transition: "border-color 0.2s, box-shadow 0.2s",
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = "rgba(0, 255, 255, 0.3)";
+              e.currentTarget.style.boxShadow = "0 0 0 2px rgba(0, 255, 255, 0.08)";
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = "var(--cyber-border)";
+              e.currentTarget.style.boxShadow = "none";
+            }}
           />
-          <Button
+          <button
             onClick={sendMessage}
             disabled={!input.trim() || isLoading}
-            size="icon"
-            className="shrink-0 h-[44px] w-[44px]"
+            className="shrink-0 flex items-center justify-center transition-opacity"
+            style={{
+              width: "38px",
+              height: "38px",
+              borderRadius: "50%",
+              backgroundColor: !input.trim() || isLoading ? "rgba(0, 255, 255, 0.1)" : "rgba(0, 255, 255, 0.2)",
+              border: "1px solid rgba(0, 255, 255, 0.2)",
+              cursor: !input.trim() || isLoading ? "not-allowed" : "pointer",
+              opacity: !input.trim() || isLoading ? 0.4 : 1,
+            }}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="var(--cyber-accent)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
-          </Button>
+          </button>
         </div>
       </div>
     </div>
