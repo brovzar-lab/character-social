@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import type { ProjectMeta } from "@/lib/types";
 import { AdminNav } from "@/components/admin/AdminNav";
 import { ProjectCard } from "@/components/admin/ProjectCard";
@@ -43,9 +44,12 @@ export default function AdminDashboardPage() {
         {/* SYS Header */}
         <div className="flex justify-between items-center font-mono text-[11px] text-[var(--cyber-accent-dim)] uppercase tracking-[2px] mb-8 border-b border-[var(--cyber-border)] pb-3">
           <span>SYS.ADMIN // CONTROL_LAYER // ROOT_ACCESS</span>
-          <span className="font-bold text-[var(--cyber-text-bright)] tracking-[4px]">
-            SECURE_CHANNEL
-          </span>
+          <Link
+            href="/"
+            className="font-bold text-[var(--cyber-muted)] tracking-[2px] hover:text-[var(--cyber-accent)] transition-colors no-underline"
+          >
+            {"[ VIEW_AS_USER ]"}
+          </Link>
         </div>
 
         {/* Title */}

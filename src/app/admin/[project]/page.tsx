@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
+import Link from "next/link";
 import type { Character } from "@/lib/types";
 import { CharacterGridCard } from "@/components/admin/CharacterGridCard";
 import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
@@ -45,9 +46,12 @@ export default function AdminProjectPage() {
       {/* SYS Header */}
       <div className="flex justify-between items-center font-mono text-[11px] text-[var(--cyber-accent-dim)] uppercase tracking-[2px] mb-8 border-b border-[var(--cyber-border)] pb-3">
         <span>SYS.ADMIN // PROJECT_EDITOR // WRITE_ACCESS</span>
-        <span className="font-bold text-[var(--cyber-text-bright)] tracking-[4px]">
-          ADMIN_MODE
-        </span>
+        <Link
+          href={`/${project}`}
+          className="font-bold text-[var(--cyber-muted)] tracking-[2px] hover:text-[var(--cyber-accent)] transition-colors no-underline"
+        >
+          {"[ VIEW_AS_USER ]"}
+        </Link>
       </div>
 
       {/* Header Section */}
