@@ -14,7 +14,7 @@ export default function SoloChatPage() {
   const characterId = parseInt(params.characterId as string, 10);
   const [character, setCharacter] = useState<Character | null>(null);
   const [showProfile, setShowProfile] = useState(true);
-  const [showMemory, setShowMemory] = useState(false);
+  const [showMemory] = useState(true);
 
   useEffect(() => {
     fetch(`/api/characters?project=${project}`)
@@ -214,16 +214,9 @@ export default function SoloChatPage() {
                 SOLO_INTERVIEW
               </span>
 
-              <button
-                onClick={() => setShowMemory(!showMemory)}
-                className={`ml-auto font-mono text-[10px] uppercase tracking-[1px] px-3 py-1.5 border cursor-pointer transition-all ${
-                  showMemory
-                    ? "bg-[var(--cyber-accent)] text-black border-[var(--cyber-accent)]"
-                    : "bg-transparent text-[var(--cyber-muted)] border-[var(--cyber-border)] hover:border-[var(--cyber-accent-dim)] hover:text-[var(--cyber-text-bright)]"
-                }`}
-              >
-                {showMemory ? "HIDE_MEMORY" : "MEMORY"}
-              </button>
+              <span className="ml-auto font-mono text-[10px] uppercase tracking-[1px] px-3 py-1.5 text-[var(--cyber-accent-dim)]">
+                MEMORY_ACTIVE
+              </span>
             </div>
 
             {/* Chat content */}
@@ -241,7 +234,7 @@ export default function SoloChatPage() {
         <MemoryPanel
           characterName={character.name}
           open={showMemory}
-          onClose={() => setShowMemory(false)}
+          onClose={() => {}}
         />
       </div>
     </div>

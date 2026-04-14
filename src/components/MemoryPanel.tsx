@@ -132,14 +132,9 @@ export function MemoryPanel({ characterName, open, onClose }: MemoryPanelProps) 
           <h3 className="font-semibold text-sm">Memory</h3>
           <p className="text-[10px] text-muted-foreground">{characterName}</p>
         </div>
-        <div className="flex gap-1">
-          <Button size="sm" variant="ghost" onClick={loadMemories} disabled={loading}>
-            {loading ? "..." : "Refresh"}
-          </Button>
-          <Button size="sm" variant="ghost" onClick={onClose}>
-            Close
-          </Button>
-        </div>
+        <Button size="sm" variant="ghost" onClick={loadMemories} disabled={loading}>
+          {loading ? "..." : "Refresh"}
+        </Button>
       </div>
 
       {!available && (
